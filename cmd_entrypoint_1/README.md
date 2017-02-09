@@ -48,35 +48,30 @@ Trying to use the shell form, or mixing-and-matching the shell and exec forms wi
 Below is the tabular form with different combinations of CMD and ENTRYPOINT instructions.
 
 
-s.no    Dockerfile                                      command
-
- 1      ENTRYPOINT /bin/ping -c 3
-        CMD localhost                                  /bin/sh -c '/bin/ping -c 3' /bin/sh -c localhost
-
- 2      ENTRYPOINT ["/bin/ping","-c","3"]
-        CMD localhost                                  /bin/ping -c 3 /bin/sh -c localhost
-
- 3      ENTRYPOINT /bin/ping -c 3
-        CMD ["localhost"]                              /bin/sh -c '/bin/ping -c 3' localhost
-
-
- 4      ENTRYPOINT ["/bin/ping","-c","3"]
-        CMD ["localhost"]                              /bin/ping -c 3 localhost
-
+|s.no |  Dockerfile                          |            command
+------|--------------------------------------|----------------------------------------------------------
+|1    |  ENTRYPOINT /bin/ping -c 3           |
+|     |  CMD localhost                       |          /bin/sh -c '/bin/ping -c 3' /bin/sh -c localhost
+|2    |  ENTRYPOINT ["/bin/ping","-c","3"]   |
+|     | CMD localhost                        |         /bin/ping -c 3 /bin/sh -c localhost
+|3    |  ENTRYPOINT /bin/ping -c 3           |
+|     |  CMD ["localhost"]                   |          /bin/sh -c '/bin/ping -c 3' localhost
+|4    |  ENTRYPOINT ["/bin/ping","-c","3"]   |
+|     |  CMD ["localhost"]                   |          /bin/ping -c 3 localhost
 
 
 Only s.no 4 i.e using both ENTRYPOINT and CMD in exec form will give the desired result.
 
 
 suppose we created a docker image as vinodhbasavani/cmdentrypoint:1.0 using the above docker image then
-
+```shell
 docker run vinodhbasavani/cmdentrypoint:1.0 
-
+```
 will ping the localhost.
 
-
+```shell
 docker run vinodhbasavani/cmdentrypoint:1.0 google.com
-
+```
 will ping the google.com as localhost in CMD instruction is overridden by the google.com
 
 
