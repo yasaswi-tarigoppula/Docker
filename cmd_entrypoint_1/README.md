@@ -48,21 +48,16 @@ Trying to use the shell form, or mixing-and-matching the shell and exec forms wi
 Below is the tabular form with different combinations of CMD and ENTRYPOINT instructions.
 
 
-s.no    Dockerfile                                      command
-
- 1      ENTRYPOINT /bin/ping -c 3
-        CMD localhost                                  /bin/sh -c '/bin/ping -c 3' /bin/sh -c localhost
-
- 2      ENTRYPOINT ["/bin/ping","-c","3"]
-        CMD localhost                                  /bin/ping -c 3 /bin/sh -c localhost
-
- 3      ENTRYPOINT /bin/ping -c 3
-        CMD ["localhost"]                              /bin/sh -c '/bin/ping -c 3' localhost
-
-
- 4      ENTRYPOINT ["/bin/ping","-c","3"]
-        CMD ["localhost"]                              /bin/ping -c 3 localhost
-
+|s.no |  Dockerfile                          |            command
+------|--------------------------------------|----------------------------------------------------------
+|1    |  ENTRYPOINT /bin/ping -c 3           |
+|     |  CMD localhost                       |          /bin/sh -c '/bin/ping -c 3' /bin/sh -c localhost
+|2    |  ENTRYPOINT ["/bin/ping","-c","3"]   |
+|     | CMD localhost                        |         /bin/ping -c 3 /bin/sh -c localhost
+|3    |  ENTRYPOINT /bin/ping -c 3           |
+|     |  CMD ["localhost"]                   |          /bin/sh -c '/bin/ping -c 3' localhost
+|4    |  ENTRYPOINT ["/bin/ping","-c","3"]   |
+|     |  CMD ["localhost"]                   |          /bin/ping -c 3 localhost
 
 
 Only s.no 4 i.e using both ENTRYPOINT and CMD in exec form will give the desired result.
