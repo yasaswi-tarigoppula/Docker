@@ -42,3 +42,42 @@ when using this form, the commands will be executed without a shell.
 
 When using ENTRYPOINT and CMD together it's important that you always use the exec form of both instructions.
 Trying to use the shell form, or mixing-and-matching the shell and exec forms will almost never give you the result you want.
+
+
+
+Below is the tabular form with different combinations of CMD and ENTRYPOINT instructions.
+
+
+s.no    Dockerfile                                      command
+
+ 1      ENTRYPOINT /bin/ping -c 3
+        CMD localhost                                  /bin/sh -c '/bin/ping -c 3' /bin/sh -c localhost
+
+ 2      ENTRYPOINT ["/bin/ping","-c","3"]
+        CMD localhost                                  /bin/ping -c 3 /bin/sh -c localhost
+
+ 3      ENTRYPOINT /bin/ping -c 3
+        CMD ["localhost"]                              /bin/sh -c '/bin/ping -c 3' localhost
+
+
+ 4      ENTRYPOINT ["/bin/ping","-c","3"]
+        CMD ["localhost"]                              /bin/ping -c 3 localhost
+
+
+
+Only s.no 4 i.e using both ENTRYPOINT and CMD in exec form will give the desired result.
+
+
+suppose we created a docker image as vinodhbasavani/cmdentrypoint:1.0 using the above docker image then
+
+docker run vinodhbasavani/cmdentrypoint:1.0 
+
+will ping the localhost.
+
+
+docker run vinodhbasavani/cmdentrypoint:1.0 google.com
+
+will ping the google.com as localhost in CMD instruction is overridden by the google.com
+
+
+
