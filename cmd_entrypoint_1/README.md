@@ -64,14 +64,14 @@ Only s.no 4 i.e using both ENTRYPOINT and CMD in exec form will give the desired
 
 
 suppose we created a docker image as vinodhbasavani/cmdentrypoint:1.0 using the above docker image then
-
+```shell
 docker run vinodhbasavani/cmdentrypoint:1.0 
-
+```
 will ping the localhost.
 
-
+```shell
 docker run vinodhbasavani/cmdentrypoint:1.0 google.com
-
+```
 will ping the google.com as localhost in CMD instruction is overridden by the google.com
 
 
