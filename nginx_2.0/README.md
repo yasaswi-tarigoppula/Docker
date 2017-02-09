@@ -5,9 +5,9 @@ command should run when container is created using that image.
 CMD ["/usr/sbin/nginx","-g","daemon off;"] 
 
 will execute /usr/sbin/nginx -g "daemon off;" command when we run the container as
-
+```shell
 docker run --rm -d -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0
-
+```
 using the image vinodhbasavani/nginx:2.0 
 
 CMD ["/bin/bash"]
@@ -16,9 +16,9 @@ CMD ["/bin/bash"]
 1) if we are supplying the command during docker run then this supplied command will
 
    override the CMD instruction command in the Dockerfile
-
+   ```shell
    docker run --rm -d -it  -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0 /bin/bash
-
+   ```
    will start the container but nginx service will not run inside the container since that 
      
    command is overridden by the /bin/bash command.
