@@ -89,8 +89,44 @@ for pushing the images to private registry, the tag format will be different.
   
   FROM, MAINTAINER, RUN, ADD, COPY, CMD, ENTRYPOINT, VOLUME, ENV, ARG, LABEL, EXPOSE, USER, WORKDIR .
   
+  Instructions in the Dockerfile are executed in the defined order. Each and Every instruction in the Dockerfile adds an 
+  
+  additional layer to the previous image and then does a commit.
+  
   **FROM**
-  We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
+  
+  FROM instruction is used to set the BASE Image for our Docker Image(which is a CHILD image). Each and Every Dockerfile must
+  
+  have atleast one FROM instruction since we should have some BASE image. We can have multiple FROM instructions in one
+  
+  Dockerfile.
+  
+  FROM instruction will be in 3 different forms as below.
+  
+  1) FROM <image>
+  2) FROM <image>:<tag>
+  3) FROM <image>@<digest>
+  
+  The first form will pull the prescribed image with latest tag.
+  
+  The second form will pull the prescribed image with the prescribed tag.
+  
+  The third form will pull the prescribed image with the prescribed digest.
+  
+  Each and Every image/layer will have an image id and Digest. Layers are  identified by a digest, which takes the form
+  
+  algorithm:hex. The hex element is calculated by applying the algorithm (SHA256) to a layer's content. If the content changes,
+  
+  then the computed digest will also change.
+  
+  In order to get the digest of all images use the below command. 
+
+
+
+
+
+  
+    We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
 
 CMD ["/usr/sbin/nginx","-g","daemon off;"]
 
