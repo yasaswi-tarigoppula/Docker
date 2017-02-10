@@ -126,7 +126,7 @@ docker images --digests
 ```
 To get the digest of a particular image use the below command.
 ```shell
-docker images ubuntu:lastest --digests
+docker images ubuntu:latest --digests
 ```
 **RUN**
 
