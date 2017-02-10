@@ -4,6 +4,153 @@ ubuntu:trusty docker image will contains all the default commands that will come
 with the ubuntu operating system.
 
 
+
+We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
+
+CMD ["/usr/sbin/nginx","-g","daemon off;"]
+
+will execute /usr/sbin/nginx -g "daemon off;" command when we run the container as
+
+docker run --rm -d -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0
+
+using the image vinodhbasavani/nginx:2.0
+
+CMD ["/bin/bash"]
+
+1) if we are supplying the command during docker run then this supplied command will
+
+override the CMD instruction command in the Dockerfile
+
+   docker run --rm -d -it  -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0 /bin/bash
+
+will start the container but nginx service will not run inside the container since that
+
+command is overridden by the /bin/bash command.
+
+2) If we have multiple CMD instructions inside the Dockerfile, then only the last CMD
+
+instruction will be used by the docker.
+
+3) If we want to run multiple processes inside the container then we should use some
+
+management tools like "Supervisor" for managing multiple processes inside the docker.
+
+Once supervisor is configured, we wil use CMD for supervisor so supervisor will take care of
+
+all required processes inside the container.
+
+4) If we don't want to override the CMD argument with docker run command then
+
+we need to use ENTRYPOINT instead of CMD.
+
+with ENTRYPOINT, the command we pass during docker run is passed as additional parameters to the command specified in the
+
+ENTRYPOINT.
+
+
+The CMD strings will be appended to the ENTRYPOINT in order to generate the container's command string.
+
+docker run --rm -d -p 80:80 --name test_nginx vinodhbasavani/nginx:4.0 "daemon off;"
+
+
+since /usr/sbin/nginx -g is added in the ENTRYPOINT instruction.
+
+
+
+
+
+we can have both CMD and ENTRYPOINT in the Dockerfile.
+
+
+When both an ENTRYPOINT and CMD are specified, the CMD string(s) will be appended to the ENTRYPOINT in order to generate the container's command string.
+
+
+
+Both the ENTRYPOINT and CMD instructions support two different forms
+
+     1) Shell form
+     2) Exec form
+
+
+1) Shell form:
+
+
+    In this form, the instructions are like
+  
+      CMD executable param1 param2
+      
+      ENTRYPOINT executable param1 param2
+
+When using the shell form, the specified binary is executed with an invocation of the shell using "/bin/sh -c"
+
+Here in this case , /bin/sh executable will have a process id of 1 but our command(say ping command in the above Dockerfile) 
+will not have a process id  of 1. This will be problem some times
+
+
+
+2) Exec form
+
+
+    In this form, the instructions are like
+     
+    CMD ["executable","param1","param2"]
+
+
+when using this form, the commands will be executed without a shell.
+
+
+When using ENTRYPOINT and CMD together it's important that you always use the exec form of both instructions.
+Trying to use the shell form, or mixing-and-matching the shell and exec forms will almost never give you the result you want.
+
+
+
+Below is the tabular form with different combinations of CMD and ENTRYPOINT instructions.
+
+
+|s.no |  Dockerfile                          |            command
+------|--------------------------------------|----------------------------------------------------------
+|1    |  ENTRYPOINT /bin/ping -c 3           |
+|     |  CMD localhost                       |          /bin/sh -c '/bin/ping -c 3' /bin/sh -c localhost
+|2    |  ENTRYPOINT ["/bin/ping","-c","3"]   |
+|     | CMD localhost                        |         /bin/ping -c 3 /bin/sh -c localhost
+|3    |  ENTRYPOINT /bin/ping -c 3           |
+|     |  CMD ["localhost"]                   |          /bin/sh -c '/bin/ping -c 3' localhost
+|4    |  ENTRYPOINT ["/bin/ping","-c","3"]   |
+|     |  CMD ["localhost"]                   |          /bin/ping -c 3 localhost
+
+
+Only s.no 4 i.e using both ENTRYPOINT and CMD in exec form will give the desired result.
+
+
+suppose we created a docker image as vinodhbasavani/cmdentrypoint:1.0 using the above docker image then
+```shell
+docker run vinodhbasavani/cmdentrypoint:1.0 
+```
+will ping the localhost.
+
+```shell
+docker run vinodhbasavani/cmdentrypoint:1.0 google.com
+```
+will ping the google.com as localhost in CMD instruction is overridden by the google.com
+
+Suppose we created a docker image as vinodhbasavani/cmdentrypoint:2.0 with above docker file.
+
+docker run vinodhbasavani/cmdentrypoint:2.0 
+
+will not ping any host rather it print the help of the ping command.
+
+docker run vinodhbasavani/cmdentrypoint:2.0 localhost 
+
+will ping the localhost.
+
+Note: 1) if command supplied in the #docker run command is in shell form, it must give the ERROR. 2) if command supplied in the #docker run command is in exex form , it will give the OUTPUT.
+
+so The commands which are passed to #docker run command are in "EXEC" form only.
+
+
+
+
+
 ### Docker Swarm
 
 Using Docker swarm, we can turn a group of Docker engines into a single, virtual docker engine.
