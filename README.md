@@ -216,7 +216,9 @@ using the image vinodhbasavani/nginx:2.0
 
 4) If we don't want to override the CMD argument with docker run command then
 
-   we need to use **ENTRYPOINT** instead of CMD.
+   we need to use **ENTRYPOINT** instead of CMD. but we can forcefully override ENTRYPOINT defined in Dockerfile
+   
+   during run command using ** --entrypoint ** flag.
 
 with ENTRYPOINT, the command we pass during docker run is passed as additional parameters to the command specified in the
 
@@ -322,9 +324,180 @@ Note:
 
 so The commands which are passed to #docker run command are in "EXEC" form only.
 
+** The Main difference between RUN and CMD,ENTRYPOINT instructions is,
+   The RUN instruction commands will be executed when docker daemon is building the docker image.
+   where as CMD,ENTRYPOINT instructions will executed when docker daemon is starting the container from that image.
+**
 
+** ENV **
 
+This instruction is used to set environment variables right inside our Dockerfile for our containers launched using that image.
 
+Format of ENV instruction is simple, it just accepts a key value pair.
+
+Examples are shown below.
+
+```shell
+ENV MY_PATH /opt
+or
+ENV MY_PATH=/opt
+```
+We can pass the environment variables during docker run command with ** --env ** flag.
+
+** ADD **
+
+ADD instruction is used to add files and directories from our docker build directory to inside of our image.
+
+The format of ADD instruction is 
+```shell
+ADD source destination
+```
+destination is the directory inside the image.
+
+source can be 
+  1) URL
+  2) file
+  3) Directory
+  
+The main requirement for source is , these should be inside our current build directory if source is either a file or directory.
+
+```shell
+ADD index.html /usr/share/nginx/html/index.html
+```
+```shell
+ADD https://archive.apache.org/dist/httpd/binaries/linux/apache_1.3.27-x86_64-whatever-linux22.tar.gz /opt/
+```
+Here ADD is used for downloading a file from a URL and placing it inside the image.
+
+The main feature of ADD is ** automated unpacking of compressed files **
+
+```shell
+ADD apache-tomcat-8.0.21.tar.gz /opt/tomcat
+```
+This will untar the apache-tomcat-8.0.21.tar.gz to the directory inside /opt/tomcat in the container.
+
+** The above feature will not work if the SOURCE is URL.**
+
+If there is a file/directory in teh destination that has the same name, it will not be overwritten.
+
+If the target destination does not exist, Docker will create it.
+
+If the source is URL and destination does not end with a file name then file is downloaded from URL to destination with same
+
+name as in the URL.
+
+If the source is URL and destination does end with a file name then file is downloaded from URL to destination with the give 
+
+name.
+
+** COPY **
+
+COPY is similar to the ADD but it does not have the decompression features which are availiable with the CMD instruction.
+
+```shell
+COPY conf/ /usr/share/nginx/html
+```
+will copy the files/directories inside the conf directory to /usr/share/nginx/html directory.
+
+** VOLUME **
+
+There are two different forms of VOLUME instruction.
+
+```shell
+VOLUME ["/data","/data1"]
+
+VOLUME /data1 /data2
+```
+The volume instruction creates a mount point with the specified name and this instruction does not tell what to mount from local 
+
+system. This only tells docker that whatever placed in that volume location will not be part of that image and these will be 
+
+accessible from any other containers as well.
+
+```
+docker run -d --volumes-from data_container -p 80:80 --name app_server test_image
+```
+
+will make volumes of the container named data_container accessible to the app_server container.
+
+we can mount the data from docker host to this volume during docker run command.
+
+```shell
+docker run -v /home/test:/data test_image
+```
+then whole of the content inside /home/test will be mounted to /data inside the container.
+
+** If any build steps change the data within the volume after it has been declared, those changes will be discarded. **
+
+** WORKDIR **
+  
+  This instruction is used to set the working directory for any instruction (RUN, CMD, ENTRYPOINT, COPY and ADD) 
+  
+  inside the Dockerfile.
+ 
+ ** USER **
+ 
+ The USER instruction sets the user name or UID to use when running the image and for any RUN, CMD and ENTRYPOINT instructions
+ 
+ that follow it in the Dockerfile.
+ 
+ This user must be created before using if that user does not exist in the image other wise docker daemon will give you an error 
+ 
+ stating that "no matching entries in passwd file".
+ 
+ ** LABEL **
+ 
+ This instruction is used to add Metadata to an image.
+ 
+ A LABEL is a key value pair.
+ 
+ ** ARG **
+ 
+ This instruction is used to pass key value pairs during the image build time.
+ 
+ ARG instruction takes the below from.
+ 
+ ```shell
+ ARG name=default_value
+ or
+ ARG name
+ ```
+ ```shell
+ docker build --build-arg HOME=/home/vinodh SHELL=/bin/bash -t vinodhbasavani/test:1.0 . 
+ ```
+ Later in the Dockerfile, we can use the ARG name as ** $name **
+ 
+ ** 
+    1) Since ARG apply during build time, ARG can be used only in RUN , ADD, COPY instruction as these instruction 
+       are executed     during image build time.
+    2) It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time
+       (during     container creation time).
+    3)  ENV instructions can be used in any instructions.
+    **
+    
+We can use ARG or ENV instruction to specify variables that are availiable to RUN instruction. Environment variables defined
+
+using ENV instruction always override  ARG instruction of same name.
+ 
+ ** EXPORT **
+ The EXPOSE instruction tells that the container listens on the specified network ports at runtime. EXPOSE does not make the
+ 
+ ports of the container accessible to the host. To do that, we must use either the -p flag to publish a range of ports or 
+ 
+ the -P flag to publish all of the exposed ports.
+
+** ONBUILD **
+ 
+ These instructions are executed at a later time but these will not be executed during build time of the image.
+ 
+These instructions will be executed when we are using this image as base image for building some other child images.
+
+```shell
+ONBUILD ADD . /var/www
+```
+ONBUILD accepts any other Docker instructions as parameters. However we must not use Maintainer, FROM and ONBUILD itself as
+
+parameter.
 
 ### Docker Swarm
 
