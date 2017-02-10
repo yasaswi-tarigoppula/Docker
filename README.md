@@ -325,10 +325,7 @@ Note:
 
 so The commands which are passed to #docker run command are in "EXEC" form only.
 
-** The Main difference between RUN and CMD,ENTRYPOINT instructions is,
-   The RUN instruction commands will be executed when docker daemon is building the docker image.
-   where as CMD,ENTRYPOINT instructions will executed when docker daemon is starting the container from that image.
-**
+** The Main difference between RUN and CMD,ENTRYPOINT instructions is, The RUN instruction commands will be executed when docker daemon is building the docker image. where as CMD,ENTRYPOINT instructions will executed when docker daemon is starting the container from that image.**
 
 ** ENV **
 
@@ -474,7 +471,7 @@ then whole of the content inside /home/test will be mounted to /data inside the 
     2) It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time
        (during     container creation time).
     3)  ENV instructions can be used in any instructions.
-    **
+**
     
 We can use ARG or ENV instruction to specify variables that are availiable to RUN instruction. Environment variables defined
 
