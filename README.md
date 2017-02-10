@@ -15,7 +15,7 @@ There are two methods for creating the Docker images.
      
 2) Dockerfile
 
-      gives an automated way of making images in our build and deployment pipeline.
+      Gives an automated way of making images in our build and deployment pipeline.
 
 ## Dockerfile
 
