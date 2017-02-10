@@ -139,11 +139,11 @@ docker images ubuntu:latest --digests
    
 RUN instruction in EXEC form will look like
 
-  RUN ["executable","param1","param2"] 
+** RUN ["executable","param1","param2"] **
 
 RUN instruction in Shell form will look like
 
-   RUN command 
+**  RUN command **
 
 In shell form, we can use \(backslash) to write a mutliple commands in different lines as shown below.
 
