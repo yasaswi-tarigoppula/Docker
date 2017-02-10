@@ -80,6 +80,7 @@ for pushing the images to private registry, the tag format will be different.
  ```shell
  docker build --no-cache -t vinodhbasavani/nginx:1.0 .
  ```
+  If you did not specify the tag, the it will create the docker image with *latest* as tag.
   
   ***Writing the Dockerfiles***
   
@@ -103,23 +104,31 @@ for pushing the images to private registry, the tag format will be different.
   
   FROM instruction will be in 3 different forms as below.
   
-  1) FROM <image>
-  2) FROM <image>:<tag>
-  3) FROM <image>@<digest>
+  1) FROM image_name
+  2) FROM image_name:tag
+  3) FROM image_name@digest
   
-  The first form will pull the prescribed image with latest tag.
+The first form will pull the prescribed image with latest tag.
   
-  The second form will pull the prescribed image with the prescribed tag.
+The second form will pull the prescribed image with the prescribed tag.
   
-  The third form will pull the prescribed image with the prescribed digest.
+The third form will pull the prescribed image with the prescribed digest.
   
-  Each and Every image/layer will have an image id and Digest. Layers are  identified by a digest, which takes the form
+Each and Every image/layer will have an image id and Digest. Layers are  identified by a digest, which takes the form
   
-  algorithm:hex. The hex element is calculated by applying the algorithm (SHA256) to a layer's content. If the content changes,
+algorithm:hex. The hex element is calculated by applying the algorithm (SHA256) to a layer's content. If the content changes,
   
-  then the computed digest will also change.
+then the computed digest will also change.
   
-  In order to get the digest of all images use the below command. 
+In order to get the digest of all images use the below command.
+```shell
+docker images --digests
+```
+To get the digest of a particular image use the below command.
+```shell
+docker images ubuntu:lastest --digests
+```
+**RUN**
 
 
 
