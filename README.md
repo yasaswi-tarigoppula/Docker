@@ -129,13 +129,57 @@ To get the digest of a particular image use the below command.
 docker images ubuntu:latest --digests
 ```
 **RUN**
-
-
-
-
-
+  RUN instruction is used to execute the commands while building the image.
   
-    We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
+  RUN has two different forms
+  
+   1) Exec form
+   
+   2) Shell form
+   
+RUN instruction in EXEC form will look like
+
+*** RUN ["executable","param1","param2"] ***
+
+RUN instruction in Shell form will look like
+
+** RUN command ***
+
+In shell form, we can use \(backslash) to write a mutliple commands in different lines as shown below.
+
+```shell
+RUN apt-get install -y \
+      apt-get install -y apache2
+```
+RUN command in shell form is executed as
+```shell
+/bin/sh -c command
+```
+by default.
+
+If we want to use different shell other than **/bin/sh** we must use the Exec form as
+
+```shell
+RUN ["/bin/bash","-c","command"]
+```
+
+The Exec command does not use shell so normal shell processing will not happen.
+
+$HOME is an environment variable in linux.
+
+```shell
+RUN ["/bin/echo","$HOME"}
+```
+will not give the value of the Environment variable $HOME rather it will print the $HOME as it is.
+
+To have normal shell processing using Exec form, we should use RUN as below.
+```shell
+RUN ["/bin/bash","-c","echo","$HOME"]
+```
+
+**CMD**
+
+We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
 
 CMD ["/usr/sbin/nginx","-g","daemon off;"]
 
@@ -145,33 +189,34 @@ docker run --rm -d -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0
 
 using the image vinodhbasavani/nginx:2.0
 
-CMD ["/bin/bash"]
 
 1) if we are supplying the command during docker run then this supplied command will
 
-override the CMD instruction command in the Dockerfile
+  override the CMD instruction command in the Dockerfile
 
-   docker run --rm -d -it  -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0 /bin/bash
+  ```shell
+  docker run --rm -d -it  -p 80:80 --name test_nginx vinodhbasavani/nginx:2.0 /bin/bash
+  ```
 
-will start the container but nginx service will not run inside the container since that
+  will start the container but nginx service will not run inside the container since that
 
-command is overridden by the /bin/bash command.
+  command is overridden by the /bin/bash command.
 
 2) If we have multiple CMD instructions inside the Dockerfile, then only the last CMD
 
-instruction will be used by the docker.
+   instruction will be used by the docker.
 
 3) If we want to run multiple processes inside the container then we should use some
 
-management tools like "Supervisor" for managing multiple processes inside the docker.
+   management tools like "Supervisor" for managing multiple processes inside the docker.
 
-Once supervisor is configured, we wil use CMD for supervisor so supervisor will take care of
+   Once supervisor is configured, we wil use CMD for supervisor so supervisor will take care of
 
-all required processes inside the container.
+   all required processes inside the container.
 
 4) If we don't want to override the CMD argument with docker run command then
 
-we need to use ENTRYPOINT instead of CMD.
+   we need to use **ENTRYPOINT** instead of CMD.
 
 with ENTRYPOINT, the command we pass during docker run is passed as additional parameters to the command specified in the
 
@@ -182,19 +227,18 @@ The CMD strings will be appended to the ENTRYPOINT in order to generate the cont
 
 docker run --rm -d -p 80:80 --name test_nginx vinodhbasavani/nginx:4.0 "daemon off;"
 
-
-since /usr/sbin/nginx -g is added in the ENTRYPOINT instruction.
-
-
-
-
+The total command to start a nginx service is 
+```shell
+/usr/sbin/nginx -g "daemon off;"
+```
+since /usr/sbin/nginx -g is added in the ENTRYPOINT instruction so "daemon off;" is passed as command to docker run command.
 
 we can have both CMD and ENTRYPOINT in the Dockerfile.
 
 
-When both an ENTRYPOINT and CMD are specified, the CMD string(s) will be appended to the ENTRYPOINT in order to generate the container's command string.
+When both an ENTRYPOINT and CMD are specified, the CMD string(s) will be appended to the ENTRYPOINT in order to generate the
 
-
+container's command string.
 
 Both the ENTRYPOINT and CMD instructions support two different forms
 
@@ -204,8 +248,7 @@ Both the ENTRYPOINT and CMD instructions support two different forms
 
 1) Shell form:
 
-
-    In this form, the instructions are like
+      In this form, the instructions are like
   
       CMD executable param1 param2
       
@@ -214,6 +257,7 @@ Both the ENTRYPOINT and CMD instructions support two different forms
 When using the shell form, the specified binary is executed with an invocation of the shell using "/bin/sh -c"
 
 Here in this case , /bin/sh executable will have a process id of 1 but our command(say ping command in the above Dockerfile) 
+
 will not have a process id  of 1. This will be problem some times
 
 
@@ -230,9 +274,8 @@ when using this form, the commands will be executed without a shell.
 
 
 When using ENTRYPOINT and CMD together it's important that you always use the exec form of both instructions.
+
 Trying to use the shell form, or mixing-and-matching the shell and exec forms will almost never give you the result you want.
-
-
 
 Below is the tabular form with different combinations of CMD and ENTRYPOINT instructions.
 
@@ -251,8 +294,8 @@ Below is the tabular form with different combinations of CMD and ENTRYPOINT inst
 
 Only s.no 4 i.e using both ENTRYPOINT and CMD in exec form will give the desired result.
 
-
 suppose we created a docker image as vinodhbasavani/cmdentrypoint:1.0 using the above docker image then
+
 ```shell
 docker run vinodhbasavani/cmdentrypoint:1.0 
 ```
@@ -273,7 +316,9 @@ docker run vinodhbasavani/cmdentrypoint:2.0 localhost
 
 will ping the localhost.
 
-Note: 1) if command supplied in the #docker run command is in shell form, it must give the ERROR. 2) if command supplied in the #docker run command is in exex form , it will give the OUTPUT.
+Note: 
+  1) if command supplied in the #docker run command is in shell form, it must give the ERROR. 
+  2) if command supplied in the #docker run command is in exex form , it will give the OUTPUT.
 
 so The commands which are passed to #docker run command are in "EXEC" form only.
 
