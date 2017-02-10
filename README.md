@@ -129,7 +129,8 @@ To get the digest of a particular image use the below command.
 docker images ubuntu:latest --digests
 ```
 **RUN**
-  RUN instruction is used to execute the commands while building the image.
+
+RUN instruction is used to execute the commands while building the image.
   
   RUN has two different forms
   
