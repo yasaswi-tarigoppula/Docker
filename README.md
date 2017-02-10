@@ -22,13 +22,13 @@ the above prescribed tag format is used when you want to push the docker images 
 
 for pushing the images to private registry, the tag format will be different.
 
-    user_name refers to the Docker hub id which you will use to login to Docker Hub.
+ **user_name**     : Docker hub id which you will use to login to Docker Hub.
 
-    image_name refers to the name which you want to set for the image.
+ **image_name**    : Name which you want to set for the image.
 
-    tag refers to the string which you want to set for the tag.
+ **tag**           : String which you want to set for the tag.
 
-    build_context refers to
+ **build_context** :
 
           1) Directory in your local file system which contains a Dockerfile.
           
