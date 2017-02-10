@@ -3,6 +3,19 @@
 ubuntu:trusty docker image will contains all the default commands that will come
 with the ubuntu operating system.
 
+There are two methods for creating the Docker images.
+
+1) Docker Commit Approach
+
+     a)  Launch a container from any existing image.
+     
+     b)  Make the required changes in the running container by executing commands inside the container.
+     
+     c)  Then commit that container with a new tag.
+     
+2) Dockerfile
+
+      gives an automated way of making images in our build and deployment pipeline.
 
 ## Dockerfile
 
@@ -46,6 +59,7 @@ for pushing the images to private registry, the tag format will be different.
   cd /home/ubuntu/nginx
   docker build -t vinodhbasavani/nginx:1.0 .
   ```
+  Here . refers to Current Working Directory.
   OR
   
   ```shell
@@ -67,7 +81,15 @@ for pushing the images to private registry, the tag format will be different.
  docker build --no-cache -t vinodhbasavani/nginx:1.0 .
  ```
   
+  ***Writing the Dockerfiles***
   
+  Dockerfile are nothing but a set of Instructions. The instructions are written in UPPER CASE format.
+  
+  Examples of Instructions are 
+  
+  FROM, MAINTAINER, RUN, ADD, COPY, CMD, ENTRYPOINT, VOLUME, ENV, ARG, LABEL, EXPOSE, USER, WORKDIR .
+  
+  **FROM**
   We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
 
 CMD ["/usr/sbin/nginx","-g","daemon off;"]
