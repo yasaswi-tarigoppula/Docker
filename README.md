@@ -4,8 +4,71 @@ ubuntu:trusty docker image will contains all the default commands that will come
 with the ubuntu operating system.
 
 
+## Dockerfile
 
-We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
+    Dockerfile contains the step by step instructions to create a docker image with our own requirements.
+   
+Using Dockerfile, we can create the docker images during build time in jenkins and can push the images to docker 
+
+registry(public or private) and these images can be used further to create the docker container by pulling them 
+
+from docker registry.
+
+The command for creating the docker images from the Dockerfile is 
+```shell
+ docker build -t user_name/image_name:tag build_context
+ ```
+the above prescribed tag format is used when you want to push the docker images to Docker Hub.
+
+for pushing the images to private registry, the tag format will be different.
+
+user_name refers to the Docker hub id which you will use to login to Docker Hub.
+
+image_name refers to the name which you want to set for the image.
+
+tag refers to the string which you want to set for the tag.
+
+build_context refers to
+
+          1) Directory in your local file system which contains a Dockerfile.
+          
+          2) Git repositry url which contains a Dockerfile.
+          
+  Examples of Docker build commands.
+  
+  Suppose there is directory named 
+  ```shell 
+  /home/ubuntu/nginx
+  ```
+  which contains a Dockerfile.
+  
+  ```shell
+  cd /home/ubuntu/nginx
+  docker build -t vinodhbasavani/nginx:1.0 .
+  ```
+  OR
+  
+  ```shell
+  docker build -t vinodhbasavani/nginx:1.0 /home/ubuntu/nginx/
+  
+ ```
+ 
+ ```shell
+ docker build -t vinodhbasavani/nginx:1.0 https://github.com/vinodhbasavani/nginx.git
+ ```
+ 
+ where nginx repository contains a Dockerfile.
+ 
+ If you are building the images multiple times, then docker daemon will use cache for faster building of the image.
+ 
+ if you do not want to use the cache during image creation, use
+ 
+ ```shell
+ docker build --no-cache -t vinodhbasavani/nginx:1.0 .
+ ```
+  
+  
+  We will use CMD instruction in the Dockerfile to specify which command should run when container is created using that image.
 
 CMD ["/usr/sbin/nginx","-g","daemon off;"]
 
