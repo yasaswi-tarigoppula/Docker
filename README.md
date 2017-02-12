@@ -466,11 +466,7 @@ then whole of the content inside /home/test will be mounted to /data inside the 
  Later in the Dockerfile, we can use the ARG name as ** $name **
  
  ** 
-    1) Since ARG apply during build time, ARG can be used only in RUN , ADD, COPY instruction as these instruction 
-       are executed     during image build time.
-    2) It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time
-       (during     container creation time).
-    3)  ENV instructions can be used in any instructions.
+ Since ARG apply during build time, ARG can be used only in RUN , ADD, COPY instruction as these instruction are executed     during image build time. It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time(during     container creation time). ENV instructions can be used in any instructions.
 **
     
 We can use ARG or ENV instruction to specify variables that are availiable to RUN instruction. Environment variables defined
