@@ -219,7 +219,7 @@ using the image vinodhbasavani/nginx:2.0
 
    we need to use **ENTRYPOINT** instead of CMD. but we can forcefully override ENTRYPOINT defined in Dockerfile
    
-   during run command using ** --entrypoint ** flag.
+   during run command using **--entrypoint** flag.
 
 with ENTRYPOINT, the command we pass during docker run is passed as additional parameters to the command specified in the
 
@@ -341,7 +341,7 @@ ENV MY_PATH /opt
 or
 ENV MY_PATH=/opt
 ```
-We can pass the environment variables during docker run command with ** --env ** flag.
+We can pass the environment variables during docker run command with **--env ** flag.
 
 **ADD**
 
@@ -368,14 +368,14 @@ ADD https://archive.apache.org/dist/httpd/binaries/linux/apache_1.3.27-x86_64-wh
 ```
 Here ADD is used for downloading a file from a URL and placing it inside the image.
 
-The main feature of ADD is ** automated unpacking of compressed files **
+The main feature of ADD is **automated unpacking of compressed files**
 
 ```shell
 ADD apache-tomcat-8.0.21.tar.gz /opt/tomcat
 ```
 This will untar the apache-tomcat-8.0.21.tar.gz to the directory inside /opt/tomcat in the container.
 
-** The above feature will not work if the SOURCE is URL.**
+**The above feature will not work if the SOURCE is URL.**
 
 If there is a file/directory in teh destination that has the same name, it will not be overwritten.
 
@@ -426,7 +426,7 @@ docker run -v /home/test:/data test_image
 ```
 then whole of the content inside /home/test will be mounted to /data inside the container.
 
-** If any build steps change the data within the volume after it has been declared, those changes will be discarded. **
+**If any build steps change the data within the volume after it has been declared, those changes will be discarded.**
 
 **WORKDIR**
   
@@ -464,11 +464,10 @@ then whole of the content inside /home/test will be mounted to /data inside the 
  ```shell
  docker build --build-arg HOME=/home/vinodh SHELL=/bin/bash -t vinodhbasavani/test:1.0 . 
  ```
- Later in the Dockerfile, we can use the ARG name as ** $name **
+ Later in the Dockerfile, we can use the ARG name as **$name**
  
- ** 
- Since ARG apply during build time, ARG can be used only in RUN , ADD, COPY instruction as these instruction are executed     during image build time. It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time(during     container creation time). ENV instructions can be used in any instructions.
-**
+ Since ARG apply during build time, ARG can be used only in RUN , ADD, COPY instruction as these instruction are executed during        image build time. It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time(during    container creation time). ENV instructions can be used in any instructions.
+
     
 We can use ARG or ENV instruction to specify variables that are availiable to RUN instruction. Environment variables defined
 
