@@ -104,9 +104,9 @@ for pushing the images to private registry, the tag format will be different.
   
   FROM instruction will be in 3 different forms as below.
   
-  1) FROM image_name
-  2) FROM image_name:tag
-  3) FROM image_name@digest
+     1) FROM image_name
+     2) FROM image_name:tag
+     3) FROM image_name@digest
   
 The first form will pull the prescribed image with latest tag.
   
@@ -341,7 +341,7 @@ ENV MY_PATH /opt
 or
 ENV MY_PATH=/opt
 ```
-We can pass the environment variables during docker run command with **--env ** flag.
+We can pass the environment variables during docker run command with **--env** flag.
 
 **ADD**
 
@@ -466,6 +466,7 @@ then whole of the content inside /home/test will be mounted to /data inside the 
  ```
  Later in the Dockerfile, we can use the ARG name as **$name**
  
+ **NOTE:**
  Since ARG apply during build time, ARG can be used only in RUN , ADD, COPY instruction as these instruction are executed during        image build time. It can not be used in either CMD or ENTRYPOINT instruction as these instructions are executed during run time(during    container creation time). ENV instructions can be used in any instructions.
 
     
