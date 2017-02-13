@@ -140,11 +140,11 @@ RUN instruction is used to execute the commands while building the image.
    
 RUN instruction in EXEC form will look like
 
-** RUN ["executable","param1","param2"] **
-
+     RUN ["executable","param1","param2"] 
+     
 RUN instruction in Shell form will look like
 
-**  RUN command **
+     RUN command 
 
 In shell form, we can use \(backslash) to write a mutliple commands in different lines as shown below.
 
@@ -320,14 +320,15 @@ docker run vinodhbasavani/cmdentrypoint:2.0 localhost
 will ping the localhost.
 
 Note: 
-  1) if command supplied in the #docker run command is in shell form, it must give the ERROR. 
-  2) if command supplied in the #docker run command is in exex form , it will give the OUTPUT.
+     1) if command supplied in the #docker run command is in shell form, it must give the ERROR.
+     2) if command supplied in the #docker run command is in exex form , it will give the OUTPUT.
 
 so The commands which are passed to #docker run command are in "EXEC" form only.
 
-** The Main difference between RUN and CMD,ENTRYPOINT instructions is, The RUN instruction commands will be executed when docker daemon is building the docker image. where as CMD,ENTRYPOINT instructions will executed when docker daemon is starting the container from that image.**
+The Main difference between RUN and CMD,ENTRYPOINT instructions is, The RUN instruction commands will be executed when docker daemon is building the docker image. where as CMD,ENTRYPOINT instructions will executed when docker daemon is starting the container from that
+image.
 
-** ENV **
+**ENV**
 
 This instruction is used to set environment variables right inside our Dockerfile for our containers launched using that image.
 
@@ -342,7 +343,7 @@ ENV MY_PATH=/opt
 ```
 We can pass the environment variables during docker run command with ** --env ** flag.
 
-** ADD **
+**ADD**
 
 ADD instruction is used to add files and directories from our docker build directory to inside of our image.
 
@@ -388,7 +389,7 @@ If the source is URL and destination does end with a file name then file is down
 
 name.
 
-** COPY **
+**COPY**
 
 COPY is similar to the ADD but it does not have the decompression features which are availiable with the CMD instruction.
 
@@ -397,7 +398,7 @@ COPY conf/ /usr/share/nginx/html
 ```
 will copy the files/directories inside the conf directory to /usr/share/nginx/html directory.
 
-** VOLUME **
+**VOLUME**
 
 There are two different forms of VOLUME instruction.
 
@@ -427,13 +428,13 @@ then whole of the content inside /home/test will be mounted to /data inside the 
 
 ** If any build steps change the data within the volume after it has been declared, those changes will be discarded. **
 
-** WORKDIR **
+**WORKDIR**
   
   This instruction is used to set the working directory for any instruction (RUN, CMD, ENTRYPOINT, COPY and ADD) 
   
   inside the Dockerfile.
  
- ** USER **
+ **USER**
  
  The USER instruction sets the user name or UID to use when running the image and for any RUN, CMD and ENTRYPOINT instructions
  
@@ -443,13 +444,13 @@ then whole of the content inside /home/test will be mounted to /data inside the 
  
  stating that "no matching entries in passwd file".
  
- ** LABEL **
+ **LABEL**
  
  This instruction is used to add Metadata to an image.
  
  A LABEL is a key value pair.
  
- ** ARG **
+ **ARG**
  
  This instruction is used to pass key value pairs during the image build time.
  
@@ -473,14 +474,14 @@ We can use ARG or ENV instruction to specify variables that are availiable to RU
 
 using ENV instruction always override  ARG instruction of same name.
  
- ** EXPORT **
+ **EXPORT**
  The EXPOSE instruction tells that the container listens on the specified network ports at runtime. EXPOSE does not make the
  
  ports of the container accessible to the host. To do that, we must use either the -p flag to publish a range of ports or 
  
  the -P flag to publish all of the exposed ports.
 
-** ONBUILD **
+**ONBUILD**
  
  These instructions are executed at a later time but these will not be executed during build time of the image.
  
