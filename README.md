@@ -319,10 +319,11 @@ docker run vinodhbasavani/cmdentrypoint:2.0 localhost
 
 will ping the localhost.
 
-Note: 
-     1) if command supplied in the #docker run command is in shell form, it must give the ERROR.
-     2) if command supplied in the #docker run command is in exex form , it will give the OUTPUT.
-
+**Note:** 
+```shell
+ 1) if command supplied in the #docker run command is in shell form, it must give the ERROR.
+ 2) if command supplied in the #docker run command is in exec form , it will give the OUTPUT.
+```
 so The commands which are passed to #docker run command are in "EXEC" form only.
 
 The Main difference between RUN and CMD,ENTRYPOINT instructions is, The RUN instruction commands will be executed when docker daemon is building the docker image. where as CMD,ENTRYPOINT instructions will executed when docker daemon is starting the container from that
