@@ -3,7 +3,20 @@
 ubuntu:trusty docker image will contains all the default commands that will come
 with the ubuntu operating system.
 
+```shell
+docker run docker-image
+```
+
+ To generate this message, Docker took the following steps:
+ 1. The Docker Engine CLI client contacted the Docker Engine daemon.
+ 2. The Docker Engine daemon pulled the "hello-world" image from the Docker Hub.
+ 3. The Docker Engine daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker Engine daemon streamed that output to the Docker Engine CLI client, which sent it
+    to your terminal.
+
 There are two methods for creating the Docker images.
+
 
 1) Docker Commit Approach
 
